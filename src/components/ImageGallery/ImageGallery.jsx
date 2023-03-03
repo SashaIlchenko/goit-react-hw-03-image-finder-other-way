@@ -45,7 +45,7 @@ export default class ImageGallery extends Component {
     handleLoad = () => {
         this.setState((prev) => ({ page: prev.page + 1 }))
         window.scrollTo({
-            top: 200,
+            top: document.documentElement.getBoundingClientRect().bottom,
             behavior: 'smooth',
         });
     }
@@ -67,5 +67,6 @@ export default class ImageGallery extends Component {
             </>
         )
         if (status === Status.REJECTED) return toast.error("Ooops!Something going wrong!")
+
     }
 }
