@@ -4,7 +4,8 @@ import { ImSearch } from "react-icons/im";
 import { toast } from 'react-hot-toast';
 export class Searchbar extends Component {
     state = {
-        value: ''
+        value: '',
+
     }
     handleChange = ({ target: { value } }) => {
         this.setState({ value })

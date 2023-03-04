@@ -6,10 +6,12 @@ import ImageGallery from "./ImageGallery/ImageGallery";
 
 export class App extends Component {
   state = {
-    imageName: ''
+    imageName: '',
+    page: 1,
+    images: [],
   }
   handleSearch = (imageName) => {
-    this.setState({ imageName })
+    this.setState({ imageName, page: 1, images: [] })
   }
   render() {
     return (
@@ -18,8 +20,8 @@ export class App extends Component {
           toastOptions={{
             duration: 1500,
           }} />
-        <Searchbar onSubmit={this.handleSearch} />
-        <ImageGallery value={this.state.imageName} />
+        <Searchbar onSubmit={this.handleSearch} page={this.state.page} images={this.state.images} />
+        <ImageGallery value={this.state.imageName} onSubmit={this.handleSearch} />
       </Container>)
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { PureComponent } from "react";
 import { getImages } from "services/getImages";
 import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
 import { Button } from "components/Button/button";
@@ -13,7 +13,7 @@ const Status = {
     RESOLVED: 'resolved',
     REJECTED: 'rejected',
 };
-export default class ImageGallery extends Component {
+export default class ImageGallery extends PureComponent {
     state = {
         images: [],
         page: 1,
@@ -24,17 +24,22 @@ export default class ImageGallery extends Component {
         error: ''
     }
 
-    async componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState) {
         if (prevProps.value !== this.props.value || prevState.page !== this.state.page) {
+
             this.setState({ status: Status.PENDING })
+
             getImages(this.props.value.trim(), this.state.page).then((newImages) => {
                 if (!newImages.hits.length) {
-                    return toast.error(`Ooops!No picture with name ${this.props.value}`)
-
-                } this.setState({
+                    toast.error(`Ooops!No picture with name ${this.props.value}`)
+                    this.setState({ images: [] })
+                    return;
+                }
+                this.setState({
                     images: [...this.state.images, ...newImages.hits],
                     status: Status.RESOLVED,
                 })
+
 
             })
                 .catch((error) => {
@@ -43,6 +48,7 @@ export default class ImageGallery extends Component {
         }
     }
     handleLoad = () => {
+        console.log(this.props)
         this.setState((prev) => ({ page: prev.page + 1 }))
         window.scrollTo({
             top: document.documentElement.getBoundingClientRect().bottom,
